@@ -98,6 +98,47 @@ def logout():
     return redirect(url_for("landing"))
 
 
+@app.route("/profile")
+def profile():
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    # Placeholder data mirroring the seed_db() demo expenses — replaced by database queries in Step 5.
+    user = {
+        "name": "Demo User",
+        "email": "demo@spendly.com",
+        "initials": "DU",
+        "member_since": "September 2026",
+    }
+    stats = {
+        "total_spent": 377.49,
+        "transaction_count": 8,
+        "top_category": "Health",
+    }
+    transactions = [
+        {"date": "2026-09-18", "description": "Dinner with friends", "category": "Food", "amount": 22.75},
+        {"date": "2026-09-15", "description": "Miscellaneous", "category": "Other", "amount": 15.00},
+        {"date": "2026-09-12", "description": "New shoes", "category": "Shopping", "amount": 35.25},
+        {"date": "2026-09-10", "description": "Concert tickets", "category": "Entertainment", "amount": 60.00},
+        {"date": "2026-09-07", "description": "Gym membership", "category": "Health", "amount": 100.00},
+        {"date": "2026-09-05", "description": "Electricity bill", "category": "Bills", "amount": 89.99},
+        {"date": "2026-09-03", "description": "Metro card top-up", "category": "Transport", "amount": 12.00},
+        {"date": "2026-09-01", "description": "Weekly grocery shop", "category": "Food", "amount": 42.50},
+    ]
+    categories = [
+        {"name": "Health", "amount": 100.00, "percent": 26},
+        {"name": "Bills", "amount": 89.99, "percent": 24},
+        {"name": "Food", "amount": 65.25, "percent": 17},
+        {"name": "Entertainment", "amount": 60.00, "percent": 16},
+        {"name": "Shopping", "amount": 35.25, "percent": 9},
+        {"name": "Other", "amount": 15.00, "percent": 4},
+        {"name": "Transport", "amount": 12.00, "percent": 3},
+    ]
+    return render_template(
+        "profile.html", user=user, stats=stats, transactions=transactions, categories=categories
+    )
+
+
 @app.route("/terms")
 def terms():
     return render_template("terms.html")
@@ -111,11 +152,6 @@ def privacy():
 # ------------------------------------------------------------------ #
 # Placeholder routes — students will implement these                  #
 # ------------------------------------------------------------------ #
-
-@app.route("/profile")
-def profile():
-    return "Profile page — coming in Step 4"
-
 
 @app.route("/expenses/add")
 def add_expense():
